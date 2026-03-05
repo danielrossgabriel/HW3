@@ -6,8 +6,8 @@ import requests
 
 def get_bitcoin_historical_prices(days=365):
     """
-    Download historical BTC price data from CoinGecko.
-    Returns a dataframe with Date index and Close Price column.
+    (Unused now) Previously downloaded BTC price data from CoinGecko.
+    Kept for compatibility but not used.
     """
     BASE_URL = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
 
@@ -31,13 +31,16 @@ def get_bitcoin_historical_prices(days=365):
 
 def extract_features(days=365):
     """
-    Generate Bitcoin technical indicator features.
-    These satisfy the assignment requirement:
-    - Only technical indicators
-    - Trend / momentum indicators
+    Generate Bitcoin technical indicator features using BitstampData.csv
+    instead of the CoinGecko API.
     """
 
-    df = get_bitcoin_historical_prices(days)
+    # --- CHANGED LINE ---
+    df = pd.read_csv("BitstampData.csv")
+
+    # Keep only the close price and rename to match training pipeline
+    df = df[['Close']]
+    df.columns = ['Close Price']
 
     price = df["Close Price"]
 
